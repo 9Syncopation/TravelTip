@@ -12,6 +12,7 @@ input[type=text] {
     margin-top: 8px;
     font-size: 17px;
     border: none;
+    width: 100%;
 }
 
 .search {
@@ -70,4 +71,20 @@ input[type=text] {
 
 #map, .weather, .text, .buttons{
     flex:1
+}
+
+@media all and (max-width: 600px){
+    .info, .container{
+        flex-direction: column;
+        text-align: center;
+    }
+    .weather, .text{
+        order: 2;
+    }
+    .content{
+        padding: 5px;
+    }
+    .logo{
+        margin: 20px 0;
+    }
 }
