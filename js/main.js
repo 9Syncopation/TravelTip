@@ -13,6 +13,8 @@ locService.getLocs()
 
 
 window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('myParam');
     let lat = getParameterByName('lat');
     let lng = getParameterByName('lng');
     console.log(lat, lng);
