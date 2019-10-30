@@ -1,7 +1,8 @@
 
 export default {
     getLocs,
-    getPosition
+    getPosition,
+    getLocationName
 }
 
 var locs = [{ lat: 11.22, lng: 22.11 }]
@@ -17,9 +18,14 @@ function getLocs() {
 
 
 function getPosition() {
-    console.log('Getting Pos');
-
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
+}
+
+function getLocationName({lat, lng}){
+    return new Promise((resolve, reject) => {
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDu-jadYwdg3U7sOlVq9ZyoG_a-Uls3vcc`)
+            .then(data => resolve(data.json()))
+    });
 }
