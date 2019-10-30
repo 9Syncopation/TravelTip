@@ -2,13 +2,11 @@
 export default {
     initMap,
     addMarker,
-    panTo,
-    getLastMarker
+    panTo
 }
 
 
 var map;
-var markers = [];
 
 
 export function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -28,14 +26,7 @@ function addMarker(position) {
         map,
         title: 'Hello World!'
     });
-    markers.push(position);
-    console.log('Markers', markers);
     return marker;
-}
-
-function getLastMarker() {
-    console.log(markers);
-    return markers[markers.length - 1];
 }
 
 function panTo(lat, lng) {

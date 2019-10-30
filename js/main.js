@@ -13,35 +13,32 @@ locService.getLocs()
 
 
 window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('myParam');
     let lat = getParameterByName('lat');
     let lng = getParameterByName('lng');
-    console.log(lat, lng);
     if (+lat !== 0 && +lng !== 0) {
-        mapService.initMap(+lat, +lng)
-            .then(() => {
-                mapService.addMarker({ lat: +lat, lng: +lng });
-                locService.getLocationName({ lat: +lat, lng: +lng })
-                    .then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code ? data.plus_code.compound_code.substring(8) : 'Invalid location');
-            })
-            .catch(console.log('INIT MAP ERROR'));
+        onInitMap({lat: +lat, lng: +lng});
         return;
     }
 
 
     locService.getPosition()
         .then(pos => {
-            mapService.initMap(pos.coords.latitude, pos.coords.longitude)
-                .then(() => {
-                    mapService.addMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-                    locService.getLocationName({ lat: pos.coords.latitude, lng: pos.coords.longitude }).then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code.substring(8));
-                })
-                .catch(console.log('INIT MAP ERROR'));
+            onInitMap({lat: pos.coords.latitude, lng: pos.coords.longitude})
         })
         .catch(err => {
             console.log('err!!!', err);
         })
+}
+
+function onInitMap({lat, lng}){
+    mapService.initMap(lat, lng)
+            .then(() => {
+                mapService.addMarker({lat, lng});
+                locService.addLoc({lat, lng});
+                locService.getLocationName({lat, lng})
+                    .then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code ? data.plus_code.compound_code.substring(8) : 'Invalid location');
+            })
+            .catch(console.log('INIT MAP ERROR'));
 }
 
 function getParameterByName(name, url) {
@@ -91,6 +88,7 @@ function copyToClipboard(text) {
 
 document.querySelector('.btn-search').addEventListener('click', ev => onSearch());
 document.querySelector('.btn-copy').addEventListener('click', ev => {
-    let currPos = mapService.getLastMarker();
-    copyToClipboard(`https://9syncopation.github.io/travelTip/index.html?lng${currPos.lat}&lng${currPos.lng}`)
+    locService.getLocs().then(locs => {
+        copyToClipboard(`https://9syncopation.github.io/travelTip/index.html?lat=${locs[locs.length-1].lat}&lng=${locs[locs.length-1].lng}`)
+    })
 })

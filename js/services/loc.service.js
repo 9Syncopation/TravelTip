@@ -3,10 +3,11 @@ export default {
     getLocs,
     getPosition,
     getLocationName,
-    getCoords
+    getCoords,
+    addLoc
 }
 
-var locs = [{ lat: 11.22, lng: 22.11 }]
+var locs = []
 
 function getLocs() {
     return new Promise((resolve, reject) => {
@@ -17,6 +18,9 @@ function getLocs() {
 
 }
 
+function addLoc(pos) {
+    locs.push(pos);
+}
 
 function getPosition() {
     return new Promise((resolve, reject) => {
@@ -24,14 +28,14 @@ function getPosition() {
     })
 }
 
-function getLocationName({lat, lng}){
+function getLocationName({ lat, lng }) {
     return new Promise((resolve, reject) => {
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDu-jadYwdg3U7sOlVq9ZyoG_a-Uls3vcc`)
             .then(data => resolve(data.json()))
     });
 }
 
-function getCoords(address){
+function getCoords(address) {
     return new Promise((resolve, reject) => {
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDu-jadYwdg3U7sOlVq9ZyoG_a-Uls3vcc`)
             .then(data => resolve(data.json()))
