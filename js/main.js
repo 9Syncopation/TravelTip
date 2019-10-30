@@ -30,12 +30,26 @@ window.onload = () => {
 document.querySelector('.btn-my-location').addEventListener('click', (ev) => {
     locService.getPosition()
         .then(pos => {
-            mapService.panTo(pos.coords.latitude, pos.coords.longitude);
-            mapService.addMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-            locService.getLocationName({ lat: pos.coords.latitude, lng: pos.coords.longitude }).then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code.substring(8));
-            locService.getLocationName({ lat: 32.0749831, lng: 34.9120554 }).then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code.substring(8));
+            onSelectPos({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         })
         .catch(err => {
             console.log('err!!!', err);
         })
 })
+
+function onSelectPos(pos) {
+    mapService.panTo(pos.lat, pos.lng);
+    mapService.addMarker({ lat: pos.lat, lng: pos.lng });
+    locService.getLocationName({ lat: pos.lat, lng: pos.lng }).then(data => document.querySelector('.location-text').innerText = data.plus_code.compound_code.substring(8));
+}
+
+function onSearch() {
+    let search = document.querySelector('#search-input').value;
+    locService.getCoords(search)
+        .then(data => {
+            onSelectPos(data.results[0].geometry.location);
+        })
+}
+
+document.querySelector('.btn-search').addEventListener('click', ev => onSearch());
+
