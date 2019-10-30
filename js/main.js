@@ -15,7 +15,7 @@ locService.getLocs()
 window.onload = () => {
     let lat = getParameterByName('lat');
     let lng = getParameterByName('lng');
-    if (lat && lng) {
+    if (+lat !== 0 && +lng !== 0) {
         mapService.initMap(+lat, +lng)
             .then(() => {
                 mapService.addMarker({ lat: +lat, lng: +lng });

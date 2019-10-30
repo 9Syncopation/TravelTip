@@ -34,6 +34,7 @@ function addMarker(position) {
 }
 
 function getLastMarker() {
+    console.log(markers);
     return markers[markers.length - 1];
 }
 
