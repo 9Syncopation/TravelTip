@@ -77,5 +77,17 @@ function onSearch() {
         })
 }
 
-document.querySelector('.btn-search').addEventListener('click', ev => onSearch());
+function copyToClipboard(text) {
+    var area = document.createElement("textarea");
+    document.body.appendChild(area);
+    area.value = text;
+    area.select();
+    document.execCommand("copy");
+    document.body.removeChild(area);
+}
 
+document.querySelector('.btn-search').addEventListener('click', ev => onSearch());
+document.querySelector('.btn-copy').addEventListener('click', ev => {
+    let currPos = mapService.getLastMarker();
+    copyToClipboard(`https://9syncopation.github.io/travelTip/index.html?lng${currPos.lat}&lng${currPos.lng}`)
+})
